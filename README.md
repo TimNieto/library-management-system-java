@@ -1,7 +1,7 @@
 # Library Management System with Java Swing GUI and SQLite Integration
 
 ## Overview
-This is a **Java-based Library Management System** featuring a graphical user interface built with **Java Swing** and **SQLite** for persistent data storage. The project demonstrates **core OOP principles** including inheritance, encapsulation, abstraction, and polymorphism, while providing features for managing books, members, and borrowing/returning transactions.
+This is a **Java-based Library Management System** featuring a graphical user interface built with **Java Swing** and **SQLite** for persistent data storage. The project demonstrates **core OOP principles** including inheritance, encapsulation, abstraction, and polymorphism, while providing features for managing **books, members, and borrowing/returning transactions**.
 
 ## Features
 - Add, remove, and manage books

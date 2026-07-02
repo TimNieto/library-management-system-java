@@ -1,22 +1,26 @@
-public abstract class Person 
-{
+public abstract class Person {
     private String name;
-    private int ID;
+    private int id;
 
-    public Person(String name, int ID) 
-    {
+    public Person(String name, int id) {
         this.name = name;
-        this.ID = ID;
+        this.id = id;
     }
 
-    public String getName() 
-    {
+    public String getName() {
         return name;
     }
 
-    public int getID() 
-    {
-        return ID;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public abstract void borrowBook(Book book) throws Exception;

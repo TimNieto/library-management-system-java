@@ -1,119 +1,112 @@
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.util.List;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-public class LibraryGUI extends JFrame 
-{
+public class LibraryGUI extends JFrame {
     private Library library;
     private JTable booksTable;
     private JTable membersTable;
     private JTable borrowedBooksTable;
-    
+
     private JTextField bookTitleField;
     private JTextField bookAuthorField;
     private JTextField bookISBNField;
     private JTextField bookPublicationDateField;
     private JTextField bookCopiesField;
-    
+
     private JTextField memberNameField;
     private JTextField memberIDField;
-    
+
     private JTextField borrowISBNField;
     private JTextField borrowMemberIDField;
 
-    public LibraryGUI() 
-    {
+    public LibraryGUI() {
         library = new Library();
+
         setTitle("Library Management System");
         setLayout(new BorderLayout());
         setSize(800, 600);
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        JPanel bookPanel = createBookPanel();
-        tabbedPane.addTab("Books", bookPanel);
-
-        JPanel memberPanel = createMemberPanel();
-        tabbedPane.addTab("Members", memberPanel);
-
-        JPanel borrowPanel = createBorrowPanel();
-        tabbedPane.addTab("Borrow/Return", borrowPanel);
-
-        JPanel borrowedBooksPanel = createBorrowedBooksPanel();
-        tabbedPane.addTab("Borrowed Books", borrowedBooksPanel);
+        tabbedPane.addTab("Books", createBookPanel());
+        tabbedPane.addTab("Members", createMemberPanel());
+        tabbedPane.addTab("Borrow/Return", createBorrowPanel());
+        tabbedPane.addTab("Borrowed Books", createBorrowedBooksPanel());
 
         add(tabbedPane, BorderLayout.CENTER);
-        
-        updateBookTable((DefaultTableModel) booksTable.getModel());
-        updateMemberTable((DefaultTableModel) membersTable.getModel());
-        updateBorrowedBooksTable((DefaultTableModel) borrowedBooksTable.getModel());
+
+        refreshTables();
     }
 
-    private JPanel createBookPanel() 
-    {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-    
+    private JPanel createBookPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+
         booksTable = new JTable();
-        DefaultTableModel bookTableModel = new DefaultTableModel(new Object[]{"Title", "Author", "ISBN", "Publication Date", "Available Copies"}, 0);
+        DefaultTableModel bookTableModel = new DefaultTableModel(
+                new Object[] { "Title", "Author", "ISBN", "Publication Date", "Available Copies" }, 0);
         booksTable.setModel(bookTableModel);
-    
-        JScrollPane bookScrollPane = new JScrollPane(booksTable);
-        panel.add(bookScrollPane, BorderLayout.CENTER);
-    
-        JPanel controlPanel = new JPanel();
-        controlPanel.setLayout(new GridLayout(6, 2));
-    
+
+        panel.add(new JScrollPane(booksTable), BorderLayout.CENTER);
+
+        JPanel controlPanel = new JPanel(new GridLayout(6, 2));
+
         controlPanel.add(new JLabel("Title:"));
         bookTitleField = new JTextField();
         controlPanel.add(bookTitleField);
-    
+
         controlPanel.add(new JLabel("Author:"));
         bookAuthorField = new JTextField();
         controlPanel.add(bookAuthorField);
-    
+
         controlPanel.add(new JLabel("ISBN:"));
         bookISBNField = new JTextField();
         controlPanel.add(bookISBNField);
-    
+
         controlPanel.add(new JLabel("Publication Date:"));
         bookPublicationDateField = new JTextField();
         controlPanel.add(bookPublicationDateField);
-    
+
         controlPanel.add(new JLabel("Available Copies:"));
         bookCopiesField = new JTextField();
         controlPanel.add(bookCopiesField);
-    
+
         JButton addBookButton = new JButton("Add Book");
-        addBookButton.addActionListener(e -> addBook());
+        addBookButton.addActionListener(event -> addBook());
         controlPanel.add(addBookButton);
-    
+
         JButton removeBookButton = new JButton("Remove Book");
-        removeBookButton.addActionListener(e -> removeBook());
+        removeBookButton.addActionListener(event -> removeBook());
         controlPanel.add(removeBookButton);
-    
+
         panel.add(controlPanel, BorderLayout.SOUTH);
-    
+
         return panel;
     }
-    
 
-    private JPanel createMemberPanel() 
-    {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+    private JPanel createMemberPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
 
         membersTable = new JTable();
-        DefaultTableModel memberTableModel = new DefaultTableModel(new Object[]{"Member ID", "Name"}, 0);
+        DefaultTableModel memberTableModel = new DefaultTableModel(new Object[] { "Member ID", "Name" }, 0);
         membersTable.setModel(memberTableModel);
 
-        JScrollPane memberScrollPane = new JScrollPane(membersTable);
-        panel.add(memberScrollPane, BorderLayout.CENTER);
+        panel.add(new JScrollPane(membersTable), BorderLayout.CENTER);
 
-        JPanel controlPanel = new JPanel();
-        controlPanel.setLayout(new GridLayout(3, 2));
+        JPanel controlPanel = new JPanel(new GridLayout(3, 2));
 
         controlPanel.add(new JLabel("Member Name:"));
         memberNameField = new JTextField();
@@ -124,11 +117,11 @@ public class LibraryGUI extends JFrame
         controlPanel.add(memberIDField);
 
         JButton addMemberButton = new JButton("Add Member");
-        addMemberButton.addActionListener(e -> addMember());
+        addMemberButton.addActionListener(event -> addMember());
         controlPanel.add(addMemberButton);
 
         JButton removeMemberButton = new JButton("Remove Member");
-        removeMemberButton.addActionListener(e -> removeMember());
+        removeMemberButton.addActionListener(event -> removeMember());
         controlPanel.add(removeMemberButton);
 
         panel.add(controlPanel, BorderLayout.SOUTH);
@@ -136,10 +129,8 @@ public class LibraryGUI extends JFrame
         return panel;
     }
 
-    private JPanel createBorrowPanel() 
-    {
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 2));
+    private JPanel createBorrowPanel() {
+        JPanel panel = new JPanel(new GridLayout(3, 2));
 
         panel.add(new JLabel("Book ISBN:"));
         borrowISBNField = new JTextField();
@@ -150,265 +141,323 @@ public class LibraryGUI extends JFrame
         panel.add(borrowMemberIDField);
 
         JButton borrowButton = new JButton("Borrow Book");
-        borrowButton.addActionListener(e -> borrowBook());
+        borrowButton.addActionListener(event -> borrowBook());
         panel.add(borrowButton);
 
         JButton returnButton = new JButton("Return Book");
-        returnButton.addActionListener(e -> returnBook());
+        returnButton.addActionListener(event -> returnBook());
         panel.add(returnButton);
 
         return panel;
     }
 
-    private JPanel createBorrowedBooksPanel() 
-    {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-    
+    private JPanel createBorrowedBooksPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+
         borrowedBooksTable = new JTable();
-        DefaultTableModel borrowedBooksTableModel = new DefaultTableModel(new Object[]{"Borrow ID", "Member ID", "Book ISBN", "Borrow Date"}, 0);
+        DefaultTableModel borrowedBooksTableModel = new DefaultTableModel(
+                new Object[] { "Member ID", "Book ISBN", "Borrow Date" }, 0);
         borrowedBooksTable.setModel(borrowedBooksTableModel);
-    
-        JScrollPane scrollPane = new JScrollPane(borrowedBooksTable);
-        panel.add(scrollPane, BorderLayout.CENTER);
-    
+
+        panel.add(new JScrollPane(borrowedBooksTable), BorderLayout.CENTER);
+
         return panel;
     }
 
-    
+    private void addBook() {
+        String title = bookTitleField.getText().trim();
+        String author = bookAuthorField.getText().trim();
+        String isbn = bookISBNField.getText().trim();
+        String publicationDate = bookPublicationDateField.getText().trim();
+        String copiesText = bookCopiesField.getText().trim();
 
-    private void updateBookTable(DefaultTableModel tableModel) 
-    {
-        tableModel.setDataVector(getBooksData(), new Object[]{"Title", "Author", "ISBN", "Publication Date", "Available Copies"});
-    }
-
-    private void updateMemberTable(DefaultTableModel tableModel) 
-    {
-        tableModel.setDataVector(getMembersData(), new Object[]{"Member ID", "Name"});
-    }
-
-    private Object[][] getBooksData() 
-    {
-        List<Book> books = library.getBooks();
-        Object[][] data = new Object[books.size()][5];
-        for (int i = 0; i < books.size(); i++) {
-            Book book = books.get(i);
-            data[i][0] = book.getTitle();
-            data[i][1] = book.getAuthor();
-            data[i][2] = book.getIsbn();
-            data[i][3] = book.getPublicationDate();
-            data[i][4] = book.getAvailableCopies();
-        }
-        return data;
-    }
-
-    private Object[][] getMembersData() 
-    {
-        List<Member> members = library.getMembers();
-        Object[][] data = new Object[members.size()][2];
-        for (int i = 0; i < members.size(); i++) {
-            Member member = members.get(i);
-            data[i][0] = member.getMemberID();
-            data[i][1] = member.getName();
-        }
-        return data;
-    }
-
-    private void addBook() 
-    {
-        String title = bookTitleField.getText();
-        String author = bookAuthorField.getText();
-        String isbn = bookISBNField.getText();
-        String pubDate = bookPublicationDateField.getText();
-        String copiesText = bookCopiesField.getText();
-        
-        int availableCopies = 0;
-        try {
-            availableCopies = Integer.parseInt(copiesText);
-        } catch (NumberFormatException e) 
-        {
-            JOptionPane.showMessageDialog(this, "Invalid number of copies. Please enter a valid integer.");
-            return;
-        }
-        
-        if (title.isEmpty() || author.isEmpty() || isbn.isEmpty() || pubDate.isEmpty()) 
-        {
-            JOptionPane.showMessageDialog(this, "All fields must be filled out.");
+        if (title.isEmpty() || author.isEmpty() || isbn.isEmpty() || publicationDate.isEmpty()
+                || copiesText.isEmpty()) {
+            showMessage("All book fields must be filled out.");
             return;
         }
 
-        Book existingBook = library.findBookByISBN(isbn);
-        if (existingBook != null) 
-        {
-            JOptionPane.showMessageDialog(this, "A book with this ISBN already exists.");
+        Integer availableCopies = parseInteger(copiesText, "Invalid number of copies. Please enter a valid integer.");
+        if (availableCopies == null) {
             return;
         }
 
-        Book book = new Book(title, author, pubDate, isbn, availableCopies);
+        if (availableCopies < 0) {
+            showMessage("Available copies cannot be negative.");
+            return;
+        }
+
+        if (library.findBookByISBN(isbn) != null) {
+            showMessage("A book with this ISBN already exists.");
+            return;
+        }
+
+        Book book = new Book(title, author, publicationDate, isbn, availableCopies);
         library.addBook(book);
-        updateBookTable((DefaultTableModel) booksTable.getModel());
-        JOptionPane.showMessageDialog(this, "Book added successfully!");
-    }
-    
 
-    private void removeBook() 
-    {
-        String isbn = bookISBNField.getText();
+        updateBookTable();
+        clearBookFields();
+        showMessage("Book added successfully.");
+    }
+
+    private void removeBook() {
+        String isbn = bookISBNField.getText().trim();
+
+        if (isbn.isEmpty()) {
+            showMessage("Please enter the ISBN of the book to remove.");
+            return;
+        }
+
         Book book = library.findBookByISBN(isbn);
-        if (book != null) {
-            library.removeBook(book);
-            updateBookTable((DefaultTableModel) booksTable.getModel());
-            JOptionPane.showMessageDialog(this, "Book removed successfully!");
+
+        if (book == null) {
+            showMessage("Book not found.");
+            return;
         }
+
+        library.removeBook(book);
+        updateBookTable();
+        clearBookFields();
+        showMessage("Book removed successfully.");
     }
 
-    private void addMember() 
-    {
-        String memberName = memberNameField.getText();
-        String memberIDText = memberIDField.getText();
-    
-        int memberId = 0;
-        try 
-        {
-            memberId = Integer.parseInt(memberIDText);
-        }    
-        catch (NumberFormatException e) 
-        {
-            JOptionPane.showMessageDialog(this, "Invalid Member ID. Please enter a valid integer.");
-            return;
-        }
-    
-        if (memberName.isEmpty()) 
-        {
-            JOptionPane.showMessageDialog(this, "Member Name cannot be empty.");
+    private void addMember() {
+        String memberName = memberNameField.getText().trim();
+        String memberIDText = memberIDField.getText().trim();
+
+        if (memberName.isEmpty() || memberIDText.isEmpty()) {
+            showMessage("Member name and member ID must be filled out.");
             return;
         }
 
-        Member existingMember = library.findMemberByID(memberId);
-        if (existingMember != null) 
-        {
-            JOptionPane.showMessageDialog(this, "A member with this ID already exists.");
+        Integer memberId = parseInteger(memberIDText, "Invalid member ID. Please enter a valid integer.");
+        if (memberId == null) {
             return;
         }
+
+        if (library.findMemberByID(memberId) != null) {
+            showMessage("A member with this ID already exists.");
+            return;
+        }
+
         Member member = new Member(memberName, memberId);
         library.addMember(member);
-        updateMemberTable((DefaultTableModel) membersTable.getModel());
+
+        updateMemberTable();
+        clearMemberFields();
+        showMessage("Member added successfully.");
     }
 
-    private void removeMember() 
-    {
-        int memberId = Integer.parseInt(memberIDField.getText());
-        Member member = library.findMemberByID(memberId);
-        if (member != null) 
-        {
-            library.removeMember(member);
-            updateMemberTable((DefaultTableModel) membersTable.getModel());
-            JOptionPane.showMessageDialog(this, "Member removed successfully!");
+    private void removeMember() {
+        String memberIDText = memberIDField.getText().trim();
+
+        if (memberIDText.isEmpty()) {
+            showMessage("Please enter the member ID to remove.");
+            return;
         }
-    }
 
-    private void borrowBook() 
-    {
-        String isbn = borrowISBNField.getText(); 
-        Book book = library.findBookByISBN(isbn); 
-        int memberId = Integer.parseInt(borrowMemberIDField.getText());  
-        Member member = library.findMemberByID(memberId);  
-
-        if (book != null && member != null) 
-        { 
-            if (book.getAvailableCopies() > 0) 
-            {
-                try 
-                {
-                    library.borrowBook(book, member); 
-                    updateBookTable((DefaultTableModel) booksTable.getModel());
-                    updateBorrowedBooksTable((DefaultTableModel) borrowedBooksTable.getModel()); // Update borrowed books table
-                    JOptionPane.showMessageDialog(this, "Book borrowed successfully!");
-                } 
-                catch (Exception e) 
-                {
-                    JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-                }
-            } 
-            else 
-            {
-                JOptionPane.showMessageDialog(this, "No available copies to borrow.");
-            }
-        }    
-        else 
-        {
-            JOptionPane.showMessageDialog(this, "Book or Member not found.");
+        Integer memberId = parseInteger(memberIDText, "Invalid member ID. Please enter a valid integer.");
+        if (memberId == null) {
+            return;
         }
-    }
 
-    
-
-    private void returnBook() 
-    {
-        String isbn = borrowISBNField.getText();
-        Book book = library.findBookByISBN(isbn); 
-        int memberId = Integer.parseInt(borrowMemberIDField.getText());
         Member member = library.findMemberByID(memberId);
 
-        if (book != null && member != null) 
-        {
-            boolean isBorrowed = false;
-            for (Object[] record : library.getBorrowedBooks()) 
-            {
-                if ((int) record[0] == memberId && record[1].equals(isbn)) 
-                {
-                    isBorrowed = true;
-                    break;
-                }
-            }
-            if (isBorrowed) 
-            {
-                try 
-                {
-                    library.returnBook(book, member);
-                    updateBookTable((DefaultTableModel) booksTable.getModel());
-                    updateBorrowedBooksTable((DefaultTableModel) borrowedBooksTable.getModel()); // Update borrowed books table
-                    JOptionPane.showMessageDialog(this, "Book returned successfully!");
-                } 
-                catch (Exception e) 
-                {
-                    JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-                }
-            } 
-            else 
-            {
-            JOptionPane.showMessageDialog(this, "This book has not been borrowed by this member.");
-            }
-        } 
-        else 
-        {
-            JOptionPane.showMessageDialog(this, "Book or Member not found.");
+        if (member == null) {
+            showMessage("Member not found.");
+            return;
+        }
+
+        library.removeMember(member);
+        updateMemberTable();
+        clearMemberFields();
+        showMessage("Member removed successfully.");
+    }
+
+    private void borrowBook() {
+        String isbn = borrowISBNField.getText().trim();
+        String memberIDText = borrowMemberIDField.getText().trim();
+
+        if (isbn.isEmpty() || memberIDText.isEmpty()) {
+            showMessage("Book ISBN and member ID must be filled out.");
+            return;
+        }
+
+        Integer memberId = parseInteger(memberIDText, "Invalid member ID. Please enter a valid integer.");
+        if (memberId == null) {
+            return;
+        }
+
+        Book book = library.findBookByISBN(isbn);
+        Member member = library.findMemberByID(memberId);
+
+        if (book == null || member == null) {
+            showMessage("Book or member not found.");
+            return;
+        }
+
+        if (book.getAvailableCopies() <= 0) {
+            showMessage("No available copies to borrow.");
+            return;
+        }
+
+        try {
+            library.borrowBook(book, member);
+            refreshTables();
+            clearBorrowFields();
+            showMessage("Book borrowed successfully.");
+        } catch (Exception exception) {
+            showMessage("Error: " + exception.getMessage());
         }
     }
 
+    private void returnBook() {
+        String isbn = borrowISBNField.getText().trim();
+        String memberIDText = borrowMemberIDField.getText().trim();
 
+        if (isbn.isEmpty() || memberIDText.isEmpty()) {
+            showMessage("Book ISBN and member ID must be filled out.");
+            return;
+        }
 
-    private void updateBorrowedBooksTable(DefaultTableModel tableModel) 
-    {   
-        tableModel.setDataVector(getBorrowedBooksData(), new Object[]{"Member ID", "Book ISBN", "Borrow Date"});
+        Integer memberId = parseInteger(memberIDText, "Invalid member ID. Please enter a valid integer.");
+        if (memberId == null) {
+            return;
+        }
+
+        Book book = library.findBookByISBN(isbn);
+        Member member = library.findMemberByID(memberId);
+
+        if (book == null || member == null) {
+            showMessage("Book or member not found.");
+            return;
+        }
+
+        if (!isBookBorrowedByMember(memberId, isbn)) {
+            showMessage("This book has not been borrowed by this member.");
+            return;
+        }
+
+        try {
+            library.returnBook(book, member);
+            refreshTables();
+            clearBorrowFields();
+            showMessage("Book returned successfully.");
+        } catch (Exception exception) {
+            showMessage("Error: " + exception.getMessage());
+        }
     }
 
-    private Object[][] getBorrowedBooksData() 
-    {
-        List<Object[]> borrowedBooks = library.getBorrowedBooks();
-        Object[][] data = new Object[borrowedBooks.size()][3];
-        for (int i = 0; i < borrowedBooks.size(); i++) 
-        {
-            Object[] record = borrowedBooks.get(i);
-            data[i][0] = record[0]; 
-            data[i][1] = record[1]; 
-            data[i][2] = record[2]; 
+    private boolean isBookBorrowedByMember(int memberId, String isbn) {
+        for (Object[] record : library.getBorrowedBooks()) {
+            if (record[0].equals(memberId) && record[1].equals(isbn)) {
+                return true;
+            }
         }
+
+        return false;
+    }
+
+    private Integer parseInteger(String value, String errorMessage) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException exception) {
+            showMessage(errorMessage);
+            return null;
+        }
+    }
+
+    private void refreshTables() {
+        updateBookTable();
+        updateMemberTable();
+        updateBorrowedBooksTable();
+    }
+
+    private void updateBookTable() {
+        DefaultTableModel tableModel = (DefaultTableModel) booksTable.getModel();
+        tableModel.setDataVector(getBooksData(),
+                new Object[] { "Title", "Author", "ISBN", "Publication Date", "Available Copies" });
+    }
+
+    private void updateMemberTable() {
+        DefaultTableModel tableModel = (DefaultTableModel) membersTable.getModel();
+        tableModel.setDataVector(getMembersData(), new Object[] { "Member ID", "Name" });
+    }
+
+    private void updateBorrowedBooksTable() {
+        DefaultTableModel tableModel = (DefaultTableModel) borrowedBooksTable.getModel();
+        tableModel.setDataVector(getBorrowedBooksData(), new Object[] { "Member ID", "Book ISBN", "Borrow Date" });
+    }
+
+    private Object[][] getBooksData() {
+        List<Book> books = library.getBooks();
+        Object[][] data = new Object[books.size()][5];
+
+        for (int index = 0; index < books.size(); index++) {
+            Book book = books.get(index);
+
+            data[index][0] = book.getTitle();
+            data[index][1] = book.getAuthor();
+            data[index][2] = book.getIsbn();
+            data[index][3] = book.getPublicationDate();
+            data[index][4] = book.getAvailableCopies();
+        }
+
         return data;
     }
 
-    public static void main(String[] args) 
-    {
+    private Object[][] getMembersData() {
+        List<Member> members = library.getMembers();
+        Object[][] data = new Object[members.size()][2];
+
+        for (int index = 0; index < members.size(); index++) {
+            Member member = members.get(index);
+
+            data[index][0] = member.getMemberID();
+            data[index][1] = member.getName();
+        }
+
+        return data;
+    }
+
+    private Object[][] getBorrowedBooksData() {
+        List<Object[]> borrowedBooks = library.getBorrowedBooks();
+        Object[][] data = new Object[borrowedBooks.size()][3];
+
+        for (int index = 0; index < borrowedBooks.size(); index++) {
+            Object[] record = borrowedBooks.get(index);
+
+            data[index][0] = record[0];
+            data[index][1] = record[1];
+            data[index][2] = record[2];
+        }
+
+        return data;
+    }
+
+    private void clearBookFields() {
+        bookTitleField.setText("");
+        bookAuthorField.setText("");
+        bookISBNField.setText("");
+        bookPublicationDateField.setText("");
+        bookCopiesField.setText("");
+    }
+
+    private void clearMemberFields() {
+        memberNameField.setText("");
+        memberIDField.setText("");
+    }
+
+    private void clearBorrowFields() {
+        borrowISBNField.setText("");
+        borrowMemberIDField.setText("");
+    }
+
+    private void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new LibraryGUI().setVisible(true));
     }
 }

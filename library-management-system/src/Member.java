@@ -1,74 +1,55 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Member extends Person //Inheritance
-{
-    private String memberName;
-    private int memberID;
-    private ArrayList<Book> borrowedBooks;
+public class Member extends Person {
+    private List<Book> borrowedBooks;
 
-    public Member(String name, int ID) 
-    {
-        super(name, ID);
-        this.memberName = name;
-        this.memberID = ID;
-        this.borrowedBooks = new ArrayList<>();
+    public Member(String name, int memberId) {
+        super(name, memberId);
+        borrowedBooks = new ArrayList<>();
     }
 
-    public String getMemberName() 
-    {
-        return memberName;
+    public String getMemberName() {
+        return getName();
     }
 
-    public void setMemberName(String memberName) 
-    {
-        this.memberName = memberName;
+    public void setMemberName(String memberName) {
+        setName(memberName);
     }
 
-    public int getMemberID() 
-    {
-        return memberID;
+    public int getMemberID() {
+        return getId();
     }
 
-    public void setMemberID(int memberID) 
-    {
-        this.memberID = memberID;
+    public void setMemberID(int memberId) {
+        setId(memberId);
     }
 
-    public ArrayList<Book> getBorrowedBooks() 
-    {
+    public List<Book> getBorrowedBooks() {
         return borrowedBooks;
     }
 
-    public void setBorrowedBooks(ArrayList<Book> borrowedBooks) 
-    {
+    public void setBorrowedBooks(List<Book> borrowedBooks) {
         this.borrowedBooks = borrowedBooks;
     }
 
     @Override
-    public void borrowBook(Book book) throws Exception 
-    {
-        if (book.getAvailableCopies() > 0) 
-        {
-            book.borrowBook();
-            borrowedBooks.add(book);
-        } 
-        else 
-        {
+    public void borrowBook(Book book) throws Exception {
+        if (book.getAvailableCopies() <= 0) {
             throw new Exception(book.getTitle() + " is currently unavailable.");
         }
+
+        book.borrowBook();
+        borrowedBooks.add(book);
     }
 
     @Override
-    public void returnBook(Book book) throws Exception 
-    {
-        if (borrowedBooks.contains(book)) 
-        {
-            book.returnBook();
-            borrowedBooks.remove(book);
-        } 
-        else 
-        {
+    public void returnBook(Book book) throws Exception {
+        if (!borrowedBooks.contains(book)) {
             throw new Exception(book.getTitle() + " was not borrowed.");
         }
+
+        book.returnBook();
+        borrowedBooks.remove(book);
     }
 }

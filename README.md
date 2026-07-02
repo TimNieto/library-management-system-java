@@ -108,29 +108,33 @@ java -cp ".:out:lib/sqlite-jdbc-3.47.1.0.jar" LibraryGUI
 
 ## Sample Output
 
-### Books Tab
+### Add Book Form
 
-![Sample Output](library-management-system/assets/sample-output.png)
+![Add Book Form](library-management-system/assets/sample-output.png)
 
-### Members Tab
+### Books Table After Adding a Book
 
-![Sample Output 2](library-management-system/assets/sample-output2.png)
+![Books Table After Adding a Book](library-management-system/assets/sample-output2.png)
 
-### Borrow and Return Tab
+### Add Member Form
 
-![Sample Output 3](library-management-system/assets/sample-output3.png)
+![Add Member Form](library-management-system/assets/sample-output3.png)
 
-### Borrowed Books Tab
+### Member Form Filled Out
 
-![Sample Output 4](library-management-system/assets/sample-output4.png)
+![Member Form Filled Out](library-management-system/assets/sample-output4.png)
 
-### Additional Screenshots
+### Members Table After Adding a Member
 
-![Sample Output 5](library-management-system/assets/sample-output5.png)
+![Members Table After Adding a Member](library-management-system/assets/sample-output5.png)
 
-![Sample Output 6](library-management-system/assets/sample-output6.png)
+### Borrow and Return Form
 
-![Sample Output 7](library-management-system/assets/sample-output7.png)
+![Borrow and Return Form](library-management-system/assets/sample-output6.png)
+
+### Borrowed Books Table
+
+![Borrowed Books Table](library-management-system/assets/sample-output7.png)
 
 ## Database Notes
 
@@ -165,9 +169,6 @@ This project is for educational and portfolio purposes only. All rights are rese
 
 You may view the source code, but you may not copy, modify, distribute, or use this code without permission from the author.
 
-## Author
-
-Created by Tim Nieto.
 ## Author
 
 Created by Tim Nieto.

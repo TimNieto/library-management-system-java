@@ -33,9 +33,7 @@ library-management-system-java/
     │   ├── sample-output2.png
     │   ├── sample-output3.png
     │   ├── sample-output4.png
-    │   ├── sample-output5.png
-    │   ├── sample-output6.png
-    │   └── sample-output7.png
+    │   └── sample-output5.png
     ├── lib/
     │   └── sqlite-jdbc-3.47.1.0.jar
     └── src/
@@ -116,25 +114,17 @@ java -cp ".:out:lib/sqlite-jdbc-3.47.1.0.jar" LibraryGUI
 
 ![Books Table After Adding a Book](library-management-system/assets/sample-output2.png)
 
-### Add Member Form
-
-![Add Member Form](library-management-system/assets/sample-output3.png)
-
-### Member Form Filled Out
-
-![Member Form Filled Out](library-management-system/assets/sample-output4.png)
-
 ### Members Table After Adding a Member
 
-![Members Table After Adding a Member](library-management-system/assets/sample-output5.png)
+![Members Table After Adding a Member](library-management-system/assets/sample-output3.png)
 
 ### Borrow and Return Form
 
-![Borrow and Return Form](library-management-system/assets/sample-output6.png)
+![Borrow and Return Form](library-management-system/assets/sample-output4.png)
 
 ### Borrowed Books Table
 
-![Borrowed Books Table](library-management-system/assets/sample-output7.png)
+![Borrowed Books Table](library-management-system/assets/sample-output5.png)
 
 ## Database Notes
 

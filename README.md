@@ -33,7 +33,7 @@ library-management-system-java/
     │   ├── sample-output2.png
     │   ├── sample-output3.png
     │   ├── sample-output4.png
-    │   └── sample-output5.png
+    │   ├── sample-output5.png
     │   └── sample-output6.png
     ├── lib/
     │   └── sqlite-jdbc-3.47.1.0.jar

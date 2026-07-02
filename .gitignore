@@ -1,26 +1,24 @@
-
----
-
-## **.gitignore**
-
-```gitignore
-# Ignore compiled class files
+# Compiled Java class files
 *.class
 
-# Ignore SQLite database files
+# SQLite database files
 *.db
+*.sqlite
+*.sqlite3
 
-# Ignore IDE-specific files
-/.idea/
-/*.iml
-*.classpath
-*.project
-/.vscode/
+# IDE/editor files
+.idea/
+*.iml
+.classpath
+.project
+.vscode/
 
-# Ignore OS-specific files
+# OS files
 .DS_Store
 Thumbs.db
 
-# Ignore build folders
-/bin/
-/out/
+# Build folders
+bin/
+out/
+target/
+build/
